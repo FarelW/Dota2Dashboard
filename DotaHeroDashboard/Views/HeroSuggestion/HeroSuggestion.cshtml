@@ -1,0 +1,58 @@
+@model IEnumerable<DotaHeroDashboard.Models.HeroSuggestionModel>
+
+<div class="text-center text-white">
+    <h1 class="display-4"><strong>Top Hero Suggestions</strong></h1>
+
+    @if (Model.Any())
+    {
+        var firstHero = Model.First();
+        <div class="hero-highlight p-4 mb-4 border rounded text-white">
+            <img src="@($"https://cdn.cloudflare.steamstatic.com{firstHero.Img}")" 
+                    alt="@firstHero.LocalizedName"
+                    class="me-4"
+                    style="width: 160px; height: 100px;" />
+
+            <div>
+                <h3 class="mb-2">@firstHero.LocalizedName</h3>
+                <p><strong>Roles:</strong> @string.Join(", ", firstHero.Roles)</p>
+                <p><strong>Attack Type:</strong> @firstHero.AttackType</p>
+                <p><strong>Games Played:</strong> @firstHero.Games</p>
+                <p><strong>Win Rate:</strong> @(firstHero.Games > 0 ? ((double)firstHero.Win / firstHero.Games * 100).ToString("0.00") : "N/A")%</p>
+            </div>
+        </div>
+
+        <table class="table text-white">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Roles</th>
+                    <th>Attack Type</th>
+                    <th>Games Played</th>
+                    <th>Win Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var hero in Model.Skip(1))
+                {
+                    <tr>
+                        <td>
+                            <img src="@($"https://cdn.cloudflare.steamstatic.com{hero.Img}")" 
+                                 alt="@hero.LocalizedName"
+                                 style="width: 80px; height: 50px;" />
+                        </td>
+                        <td>@hero.LocalizedName</td>
+                        <td>@string.Join(", ", hero.Roles)</td>
+                        <td>@hero.AttackType</td>
+                        <td>@hero.Games</td>
+                        <td>@(hero.Games > 0 ? ((double)hero.Win / hero.Games * 100).ToString("0.00") : "N/A")%</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No hero suggestions available based on the criteria.</p>
+    }
+</div>

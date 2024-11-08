@@ -1,0 +1,58 @@
+﻿@model IEnumerable<DotaHeroDashboard.Models.HeroModel>
+
+<div class="text-center text-white">
+    <h1 class="display-4"><strong>Meta Hero Suggestions</strong></h1>
+    <h2>Top Meta Heroes based on Pro Picks, Bans, and Win Rate</h2>
+
+    @if (Model.Any())
+    {
+        var firstHero = Model.First();
+        <div class="hero-highlight p-4 mb-4 border rounded">
+            <img src="@($"https://cdn.cloudflare.steamstatic.com{firstHero.Img}")" 
+                 alt="@firstHero.LocalizedName"
+                 style="width: 160px; height: 100px;" />
+
+            <h3>@firstHero.LocalizedName</h3>
+            <p><strong>Roles:</strong> @string.Join(", ", firstHero.Roles)</p>
+            <p><strong>Attack Type:</strong> @firstHero.AttackType</p>
+            <p><strong>Pro Picks:</strong> @firstHero.ProPick</p>
+            <p><strong>Pro Bans:</strong> @firstHero.ProBan</p>
+            <p><strong>Win Rate:</strong> @(firstHero.ProPick > 0 ? ((double)firstHero.ProWin / firstHero.ProPick * 100).ToString("0.00") : "N/A")%</p>
+        </div>
+    }
+
+    <small>
+
+        <table class="table mt-4 text-white">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Roles</th>
+                    <th>Attack Type</th>
+                    <th>Pro Picks</th>
+                    <th>Pro Bans</th>
+                    <th>Win Rate</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var hero in Model.Skip(1).Take(19))
+                {
+                    <tr>
+                        <td>
+                            <img src="@($"https://cdn.cloudflare.steamstatic.com{hero.Img}")" 
+                                alt="@hero.LocalizedName"
+                                style="width: 80px; height: 50px;" />
+                        </td>
+                        <td>@hero.LocalizedName</td>
+                        <td>@string.Join(", ", hero.Roles)</td> <!-- Display roles here -->
+                        <td>@hero.AttackType</td>
+                        <td>@hero.ProPick</td>
+                        <td>@hero.ProBan</td>
+                        <td>@(hero.ProPick > 0 ? ((double)hero.ProWin / hero.ProPick * 100).ToString("0.00") : "N/A")%</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </small>
+</div>
